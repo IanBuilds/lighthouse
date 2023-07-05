@@ -12,7 +12,6 @@ import tkinter as tk  # for our tkinter root
 from tkinter.messagebox import askyesno  # for our overwrite prompt
 import shutil  # a library for performing high level directory operations
 from tkinter import *
-import webbrowser  # for opening the landing page
 
 
 class Lighthouse:
@@ -20,13 +19,9 @@ class Lighthouse:
         if os.path.exists("C:/lighthouse/documents/tempDir"):
             shutil.rmtree("C:/lighthouse/documents/tempDir")
 
-        # opens directory in web browser
-        # webbrowser.open("C:/lighthouse/English/DocumentationView.html")
-
         # creates the initial gui
         self.root = Tk()
         self.root.geometry("800x500")
-        print("aaa")
         button = Button(
             self.root, text="Upload", command=lambda: Lighthouse.upload(self)
         )
@@ -36,15 +31,16 @@ class Lighthouse:
 
         button.pack()
         button2.pack()
-        print("aaa")
         self.root.mainloop()
 
         # deletes the temp directory for clean up
         if os.path.exists("C:/lighthouse/documents/tempDir"):
             shutil.rmtree("C:/lighthouse/documents/tempDir")
 
-    # takes a metadata file path
-    # returns a path based on whats in the metadata file
+    # args: self, metadataPath
+    # metadataPath - the path to the metadata file inside each product directory
+    # returns: newPath
+    # newPath - the path constructed from the information we parse via regex in each metadata.xml file
     # format: /productName/versionNumber/publicationName/language
     def createPath(self, metadataPath):
         metadata = open(metadataPath, "r")
@@ -55,7 +51,7 @@ class Lighthouse:
         language = ""
         newPath = []
 
-        # loops through the metadata file provided by metadataPath
+        # loops through the metadata file provided by metadataPath, this can be improved by using some kind of xml parsing library
         for i in range(0, len(lines)):
             line = lines[i]
             if "product-name" in line:
@@ -85,7 +81,7 @@ class Lighthouse:
                         testing = " ".join(testing)
                         print(testing)
                         pubName = testing
-                # weird case where theres a new line in the epub name
+                # weird case where theres a new line in the pub name
                 else:
                     tempLine = line.rstrip("\n") + " " + lines[i + 1]
                     x = re.search("publication-name>(.*)</", tempLine)
@@ -113,6 +109,10 @@ class Lighthouse:
         return newPath
 
     # creates the directory structure based on elements in the folderPath array
+    # args: folderPath, dirIndex, basePath
+    # folderPath - the path returned by createPath() split
+    # dirIndex - keeps track of where we are in our tempDir
+    # basePath - the default path we want to writee to
     # copies contents from our tempDir to the permanent directory
     def createDirectory(self, folderPath, dirIndex, basePath):
         newDir = "C:/lighthouse/documents/"
@@ -257,6 +257,9 @@ class Lighthouse:
         listbox.pack()
         deleteSelection.pack()
 
+    # deletes a directory
+    # args: dirName
+    # dirName - path of the directory to be deleted
     def delete(self, dirName):
         # recursively finds the subdirectories for a given directory
         subFolders = [f.path for f in os.scandir(dirName) if f.is_dir()]
@@ -271,7 +274,6 @@ class Lighthouse:
             title="Upload Zip File", prompt="Enter Zip File Path:"
         )
 
-        print(userInput)
         # unzip the userInput into a temporary directory
         try:
             with ZipFile(userInput, "r") as zipObject:
