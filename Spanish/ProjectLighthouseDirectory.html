@@ -1,0 +1,84 @@
+<html>
+<link rel="stylesheet" href="../clr.css" />
+
+<head>
+    <style>
+         :fullscreen* :-webkit-full-screen,
+        *:-moz-full-screen {
+            background-color: transparent;
+        }
+        object{
+            min-width: 100%; 
+            min-height:101%; 
+        }
+        body, html{
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        function openFullscreen() {
+            var elem = document.getElementById("display1");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
+</head>
+
+<div class="main-container">
+    <div class="alert alert-app-level">
+        <div class="alert alert-warning" role="alert">
+            <div class="alert-items">
+                <span class="alert-text">ADVERTENCIA: la funcionalidad de búsqueda no es compatible</span>
+            </div>
+        </div>
+
+    </div>
+    <header class="header header-6">
+        <div class="branding">
+            <img src="Images/lighthouseIcon.png" alt="Lighthouse" class="nav-link">
+            <span class="title" style="color: white;">P. Lighthouse SP</span>
+        </div>
+        <div class="header-nav">
+            <a href="ProjectLighthouseDirectory.html" class="active nav-link nav-text">Panel</a>
+            <a href="DocumentationView.html" class="nav-link nav-text">Doc Vista</a>
+            <form class="search" method="post" action="SearchForm.html">
+                <label for="search_input">
+                    <input id="search_input" type="text" placeholder="Search for keywords...">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </label>
+            </form>
+        </div>
+        <div class="header-actions">
+            <a href="SettingsTab.html" class="nav-link nav-text">Ajustes</a>
+            <img src="Images/settings.png" alt="Settings" class="nav-link nav-text">
+            </a>
+        </div>
+    </header>
+    <div class="content-container" style="background-color: rgb(219, 219, 219);">
+
+        <details open style="background-color: rgb(204, 204, 204);">
+            <summary style="font-size: 25; background-color: darkgrey; color: black;">&nbsp;<img class = "fit-picture" src="Images/bluehamburger.png" alt= "Products" width="30px"height="30px">&nbsp;</summary><br>
+            <h4>Documentos en Español</h4>
+            <a href="../International Documents/Spanish/using_nsx_intelligence32.pdf" target="display" style="font-size: 18; color: black; font-family: sans-serif;">VMware NSX Intelligence</a><br><br>
+            <hr>
+            <h4>Documentos en Ingles</h4>
+            <object type="text/html" data="../documents/index.html"></object>
+        </details>
+
+        <div class="content-area" style="background-color: azure;">
+            <button class="btn btn-primary" onclick="openFullscreen()">Pantalla Completa</button>
+            <br><br>
+            <iframe name="display" id="display1" width="100%" height="90%" src="Images/lighthousePlaceholder.png" frameborder="4%" style="background-color: azure;" scrolling="auto" allowfullscreen>
+            </iframe>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+
+</html>

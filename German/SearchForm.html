@@ -1,0 +1,55 @@
+<html>
+<link rel="stylesheet" href="../clr.css" />
+<div class="main-container">
+    <div class="alert alert-app-level">
+        <div class="alert alert-warning" role="alert">
+            <div class="alert-items">
+                <span class="alert-text">Achtung: Die Suchfunktion funktioniert nicht</span>
+            </div>
+        </div>
+    </div>
+    <header class="header header-6">
+        <div class="branding">
+            <img src="Images/lighthouseIcon.png" alt="Lighthouse" class="nav-link">
+            <span class="title" style="color: white;">P. Lighthouse DE</span>
+        </div>
+        <div class="header-nav">
+            <a href="ProjectLighthouseDirectory.html" class="nav-link nav-text">Armaturenbrett</a>
+            <a href="DocumentationView.html" class="nav-link nav-text">Doc-Ansicht</a>
+            <form class="search" method="post" action="SearchForm.html">
+                <label for="search_input">
+                    <input id="search_input" type="text" placeholder="Search for keywords...">
+                    <button class="btn btn-primary" type="submit">Suchen</button>
+                </label>
+            </form>
+        </div>
+        <div class="header-actions">
+            <a href="SettingsTab.html" class="nav-link nav-text">
+                Einstellungen</a>
+            <img src="Images/settings.png" alt="Settings" class="nav-link nav-text">
+            </a>
+        </div>
+    </header>
+    <div class="content-container" style="background-color: rgb(219, 219, 219);">
+        <div class="content-area" style="background-color: azure;">
+            <br>
+            <h1>Dateisuche - Warnung Funktioniert Nicht</h1>
+            <br>
+
+
+            <input type="file" id="filepicker" name="fileList" webkitdirectory multiple />
+
+            <input id="searchbar" onkeyup="searchFiles()" type="text"
+                name="search" placeholder="Dateien suchen..">
+        
+            <ol class = "search" id="listing"></ol>
+              
+            
+            <script src="../search.js"></script>
+
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+</html>
