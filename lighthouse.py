@@ -1,8 +1,8 @@
-# Project Name: Lighthouse
-#
-# Description: This is an admin script which will take a zip file and create a directory structure from its contents
-#
-# Author: Ian Bartlow
+"""
+Project Name: Lighthouse
+Description: This is an admin script which will take a zip file and create a directory structure from its contents
+Author: Ian Bartlow
+"""
 
 from zipfile import ZipFile  # to process the zip file
 import os  # for manipulating directories/files
@@ -12,6 +12,7 @@ import tkinter as tk  # for our tkinter root
 from tkinter.messagebox import askyesno  # for our overwrite prompt
 import shutil  # a library for performing high level directory operations
 from tkinter import *
+import webbrowser
 
 
 class Lighthouse:
@@ -37,11 +38,14 @@ class Lighthouse:
         if os.path.exists("C:/lighthouse/documents/tempDir"):
             shutil.rmtree("C:/lighthouse/documents/tempDir")
 
-    # args: self, metadataPath
-    # metadataPath - the path to the metadata file inside each product directory
-    # returns: newPath
-    # newPath - the path constructed from the information we parse via regex in each metadata.xml file
-    # format: /productName/versionNumber/publicationName/language
+    """
+    args: self, metadataPath
+    metadataPath - the path to the metadata file inside each product directory
+    returns: newPath
+    newPath - the path constructed from the information we parse via regex in each metadata.xml file
+    format: /productName/versionNumber/publicationName/language
+    """
+
     def createPath(self, metadataPath):
         metadata = open(metadataPath, "r")
         lines = metadata.readlines()
@@ -108,12 +112,15 @@ class Lighthouse:
         # the path generated from the metadata xml file
         return newPath
 
-    # creates the directory structure based on elements in the folderPath array
-    # args: folderPath, dirIndex, basePath
-    # folderPath - the path returned by createPath() split
-    # dirIndex - keeps track of where we are in our tempDir
-    # basePath - the default path we want to writee to
-    # copies contents from our tempDir to the permanent directory
+    """
+    creates the directory structure based on elements in the folderPath array
+    args: folderPath, dirIndex, basePath
+    folderPath - the path returned by createPath() split
+    dirIndex - keeps track of where we are in our tempDir
+    basePath - the default path we want to writee to
+    copies contents from our tempDir to the permanent directory
+    """
+
     def createDirectory(self, folderPath, dirIndex, basePath):
         newDir = "C:/lighthouse/documents/"
         docPath = newDir
@@ -257,9 +264,12 @@ class Lighthouse:
         listbox.pack()
         deleteSelection.pack()
 
-    # deletes a directory
-    # args: dirName
-    # dirName - path of the directory to be deleted
+    """
+     deletes a directory
+     args: dirName
+     dirName - path of the directory to be deleted
+    """
+
     def delete(self, dirName):
         # recursively finds the subdirectories for a given directory
         subFolders = [f.path for f in os.scandir(dirName) if f.is_dir()]
@@ -315,6 +325,7 @@ class Lighthouse:
 
 
 def main():
+    webbrowser.open("c:\lighthouse\English\ProjectLighthouseDirectory.html")
     lighthouse = Lighthouse()
 
 
