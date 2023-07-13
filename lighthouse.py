@@ -13,6 +13,7 @@ from tkinter.messagebox import askyesno  # for our overwrite prompt
 import shutil  # a library for performing high level directory operations
 from tkinter import *
 import webbrowser
+import xml.etree.ElementTree as ET  # used to parse metadata.xml
 
 
 class Lighthouse:
@@ -47,69 +48,14 @@ class Lighthouse:
     """
 
     def createPath(self, metadataPath):
-        metadata = open(metadataPath, "r")
-        lines = metadata.readlines()
-        prodName = ""
-        versionNumber = ""
-        pubName = ""
-        language = ""
+        tree = ET.parse(metadataPath)
+        root = tree.getroot()
         newPath = []
+        newPath.append(root.find("product-name").text)
+        newPath.append(root.find("publication-version").text)
+        newPath.append(root.find("publication-name").text.replace("\n", " "))
+        newPath.append(root.find("language").text)
 
-        # loops through the metadata file provided by metadataPath, this can be improved by using some kind of xml parsing library
-        for i in range(0, len(lines)):
-            line = lines[i]
-            if "product-name" in line:
-                x = re.search("product-name>(.*)</", line)
-                end = x.span()[1]
-                prodName = line[17 : end - 2]
-            elif (
-                i == 3
-            ):  # this is for an odd case which sometimes occurs in the metadata file
-                continue
-            elif "version=" in line:
-                x = re.search('version="(.*)"', line)
-                end = x.span()[1]
-                versionNumber = line[15 : end - 18]
-            elif "publication-name" in line:
-                if re.search("publication-name>(.*)</", line) is not None:
-                    x = re.search("publication-name>(.*)</", line)
-
-                    # these are used for string slicing in order to grab just the pub name from the line
-                    end = x.span()[1]
-                    pubName = line[21 : end - 2]
-
-                    # this was for a weird case in which an apostrophe was turning into the symbols below, can be improved
-                    if pubName.find("â€™") != -1:
-                        testing = pubName.split()
-                        testing[4] = "Developers"
-                        testing = " ".join(testing)
-                        print(testing)
-                        pubName = testing
-                # weird case where theres a new line in the pub name
-                else:
-                    tempLine = line.rstrip("\n") + " " + lines[i + 1]
-                    x = re.search("publication-name>(.*)</", tempLine)
-                    end = x.span()[1]
-                    pubName = tempLine[21 : end - 2]
-                    if pubName.find("â€™") != -1:
-                        testing = pubName.split()
-                        testing[4] = "Developers"
-                        testing = " ".join(testing)
-                        pubName = testing
-
-            elif "language" in line:
-                x = re.search("language>(.*)</", line)
-                end = x.span()[1]
-                language = line[13 : end - 2]
-
-        # format is prodName/version/publicationName/language
-        newPath.append(prodName)
-        newPath.append(versionNumber)
-        newPath.append(pubName)
-        newPath.append(language)
-        metadata.close()
-
-        # the path generated from the metadata xml file
         return newPath
 
     """
